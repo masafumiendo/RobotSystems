@@ -143,10 +143,6 @@ def backward(speed):
     set_motor_speed(1, speed)
     set_motor_speed(2, speed)
 
-# def forward(speed):
-#     set_motor_speed(1, -1*speed)
-#     set_motor_speed(2, -1*speed)
-
 ### begin 2.7.3
 def forward(speed, steer_angle):
     """
@@ -208,21 +204,85 @@ def Get_distance():
     #print(cm)
     return cm
 
-def test():
-    # dir_servo_angle_calibration(-10)
-    set_dir_servo_angle(-40)
-    # time.sleep(1)
-    # set_dir_servo_angle(0)
-    # time.sleep(1)
-    # set_motor_speed(1, 1)
-    # set_motor_speed(2, 1)
-    # camera_servo_pin.angle(0)
+### begin 2.8.1
+def basic_maneuvering(speed, steer_angle, time2drive):
+    forward(speed, steer_angle)
+    time.sleep(time2drive)
 
+def parallel_parking(direction, speed=10, steer_angle=30):
 
-# if __name__ == "__main__":
-#     try:
-#         # dir_servo_angle_calibration(-10)
-#         while 1:
-#             test()
-#     finally:
-#         stop()
+    # set direction
+    if direction == 'left':
+        steer_dir = -1
+    elif direction == 'right':
+        steer_dir = 1
+    speed = -1 * speed
+
+    time2drive = 1
+    basic_maneuvering(speed, 0, time2drive)
+    basic_maneuvering(speed, steer_dir * steer_angle, time2drive)
+    basic_maneuvering(speed, steer_dir * steer_angle, time2drive)
+    basic_maneuvering(speed, 0, time2drive)
+
+def three_point_turning(direction, speed=10, steer_angle=30):
+    # set direction
+    if direction == 'left':
+        steer_dir = -1
+    elif direction == 'right':
+        steer_dir = 1
+
+    time2drive = 1
+    basic_maneuvering(speed, steer_dir * steer_angle, time2drive)
+    basic_maneuvering(speed, -1 * steer_dir * steer_angle, time2drive)
+    basic_maneuvering(speed, steer_dir * steer_angle, time2drive)
+
+### end 2.8.1
+
+### begin 2.8.2
+def interface2drive():
+    while True:
+        print('This is a interface to drive your PiCar w/ various types of maneuvering. Below is list of commands...')
+        print(' a -- go forward \n'
+              ' b == go backward \n'
+              ' c -- go left \n'
+              ' d -- go right \n'
+              ' e -- parallel parking w/ left turn \n'
+              ' f -- parallel parking w/ right turn \n'
+              ' g -- k-turning w/ left turn \n'
+              ' h -- k-turning w/ right turn')
+        print('If you input other keys, this process will be stopped. Enjoy your drive!')
+        command = input('input your desired maneuvering: ')
+
+        if command == 'a' or 'b' or 'c' or 'd':
+            time2drive = input('input your desired time to drive: ')
+            time2drive = int(time2drive)
+            speed = 40
+            steer_angle = 0
+            direction = 1
+            if command == 'a':
+                print('go forward')
+            elif command == 'b':
+                print('go backward')
+                direction = -1
+            elif command == 'c':
+                steer_angle = -10
+                print('go left')
+            elif command == 'd':
+                steer_angle = 10
+                print('go right')
+            basic_maneuvering(speed * direction, steer_angle, time2drive)
+        elif command == 'e':
+            print('parallel parking w/ left turn')
+            parallel_parking('left')
+        elif command == 'f':
+            print('parallel parking w/ right turn')
+            parallel_parking('right')
+        elif command == 'g':
+            print('k-turning w/ left turn')
+            three_point_turning('left')
+        elif command == 'h':
+            print('k-turning w/ right turn')
+            three_point_turning('right')
+        else:
+            break
+### end 2.8.2
