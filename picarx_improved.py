@@ -266,10 +266,10 @@ def interface2drive():
                 print('go backward')
                 direction = -1
             elif command == 'c':
-                steer_angle = -10
+                steer_angle = -30
                 print('go left')
             elif command == 'd':
-                steer_angle = 10
+                steer_angle = 30
                 print('go right')
             basic_maneuvering(speed * direction, steer_angle, time2drive)
         elif command == 'e':
@@ -285,5 +285,6 @@ def interface2drive():
             print('k-turning w/ right turn')
             three_point_turning('right')
         else:
+            print('end driving')
             break
 ### end 2.8.2
