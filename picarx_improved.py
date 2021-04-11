@@ -211,7 +211,7 @@ def basic_maneuvering(speed, steer_angle, time2drive):
     time.sleep(time2drive)
     stop()
 
-def parallel_parking(direction, speed=10, steer_angle=30):
+def parallel_parking(direction, speed=60, steer_angle=30):
 
     # set direction
     if direction == 'left':
@@ -226,7 +226,7 @@ def parallel_parking(direction, speed=10, steer_angle=30):
     basic_maneuvering(speed, steer_dir * steer_angle, time2drive)
     basic_maneuvering(speed, 0, time2drive)
 
-def three_point_turning(direction, speed=10, steer_angle=30):
+def three_point_turning(direction, speed=60, steer_angle=30):
     # set direction
     if direction == 'left':
         steer_dir = -1
@@ -258,7 +258,7 @@ def interface2drive():
         if command == 'a' or command == 'b' or command == 'c' or command == 'd':
             time2drive = input('input your desired time to drive: ')
             time2drive = float(time2drive)
-            speed = 40
+            speed = 60
             steer_angle = 0
             direction = 1
             if command == 'a':
