@@ -1,7 +1,7 @@
 """
 Authors: Masafumi Endo
 Date: 04/10/2021
-Content: main function to calibrate steering angle
+Content: main function to calibrate steering angle (2.7.4)
 """
 
 import sys
