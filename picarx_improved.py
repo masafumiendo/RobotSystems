@@ -208,6 +208,7 @@ def Get_distance():
 def basic_maneuvering(speed, steer_angle, time2drive):
     forward(speed, steer_angle)
     time.sleep(time2drive)
+    stop()
 
 def parallel_parking(direction, speed=10, steer_angle=30):
 
