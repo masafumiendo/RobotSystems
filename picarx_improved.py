@@ -207,8 +207,7 @@ def Get_distance():
 
 ### begin 2.8.1
 def basic_maneuvering(speed, steer_angle, time2drive):
-    forward(0, 0)
-    time.sleep(0.01)
+    set_dir_servo_angle(0)
     forward(speed, steer_angle)
     time.sleep(time2drive)
     stop()
