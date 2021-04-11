@@ -243,7 +243,7 @@ def interface2drive():
     while True:
         print('This is a interface to drive your PiCar w/ various types of maneuvering. Below is list of commands...')
         print(' a -- go forward \n'
-              ' b == go backward \n'
+              ' b -- go backward \n'
               ' c -- go left \n'
               ' d -- go right \n'
               ' e -- parallel parking w/ left turn \n'
@@ -255,7 +255,7 @@ def interface2drive():
 
         if command == 'a' or 'b' or 'c' or 'd':
             time2drive = input('input your desired time to drive: ')
-            time2drive = int(time2drive)
+            time2drive = float(time2drive)
             speed = 40
             steer_angle = 0
             direction = 1
