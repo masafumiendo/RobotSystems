@@ -210,7 +210,7 @@ def test():
     # dir_servo_angle_calibration(-10)
     set_dir_servo_angle(0)
     time.sleep(1)
-    forward(100, 0)
+    forward(100, 10)
     time.sleep(1)
     # set_dir_servo_angle(0)
     # time.sleep(1)
