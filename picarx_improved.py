@@ -255,7 +255,7 @@ def interface2drive():
         print('If you input other keys, this process will be stopped. Enjoy your drive!')
         command = input('input your desired maneuvering: ')
 
-        if command == 'a' or 'b' or 'c' or 'd':
+        if command == 'a' or command == 'b' or command == 'c' or command == 'd':
             time2drive = input('input your desired time to drive: ')
             time2drive = float(time2drive)
             speed = 40
