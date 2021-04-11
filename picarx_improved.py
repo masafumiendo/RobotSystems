@@ -225,7 +225,7 @@ def parallel_parking(direction, speed=60, steer_angle=30):
     time2drive = 1
     basic_maneuvering(speed, 0, time2drive)
     basic_maneuvering(speed, steer_dir * steer_angle, time2drive)
-    basic_maneuvering(speed, steer_dir * steer_angle, time2drive)
+    basic_maneuvering(speed, -1 * steer_dir * steer_angle, time2drive)
     basic_maneuvering(speed, 0, time2drive)
 
 def three_point_turning(direction, speed=60, steer_angle=30):
