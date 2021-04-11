@@ -16,4 +16,6 @@ This follows instructions from 2.5.4 to 2.5.5.
 
 ### picarx_improved.py
 This implements improved version of picarx.py. The method named **forward** is modified to enable steering.
-__
+
+### main
+The folder named **main** contains all the necessary files to maneuver the car. I basically run the code inside this folder.

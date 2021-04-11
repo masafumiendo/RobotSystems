@@ -170,6 +170,8 @@ def forward(speed, steer_angle):
             # update left speed ratio
             l_speed_ratio = speed_ratio
 
+    # adjust servo angle
+    set_dir_servo_angle(steer_angle)
     # command speed w/ speed ratios
     set_motor_speed(1, -1 * l_speed_ratio * speed)
     set_motor_speed(2, -1 * r_speed_ratio * speed)
@@ -208,10 +210,8 @@ def Get_distance():
 
 def test():
     # dir_servo_angle_calibration(-10)
-    set_dir_servo_angle(0)
-    time.sleep(1)
-    forward(100, 10)
-    time.sleep(1)
+    set_dir_servo_angle(-40)
+    # time.sleep(1)
     # set_dir_servo_angle(0)
     # time.sleep(1)
     # set_motor_speed(1, 1)
@@ -219,10 +219,10 @@ def test():
     # camera_servo_pin.angle(0)
 
 
-if __name__ == "__main__":
-    try:
-        # dir_servo_angle_calibration(-10)
-        while 1:
-            test()
-    finally:
-        stop()
+# if __name__ == "__main__":
+#     try:
+#         # dir_servo_angle_calibration(-10)
+#         while 1:
+#             test()
+#     finally:
+#         stop()
