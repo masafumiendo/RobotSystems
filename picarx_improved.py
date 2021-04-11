@@ -169,7 +169,7 @@ def forward(speed, steer_angle):
     # adjust servo angle
     set_dir_servo_angle(steer_angle)
     # command speed w/ speed ratios
-    print('left speed ratio: {}, right speed ratio: {]'.format(l_speed_ratio, r_speed_ratio))
+    print('left speed ratio: {}, right speed ratio: {}'.format(l_speed_ratio, r_speed_ratio))
     set_motor_speed(1, -1 * l_speed_ratio * speed)
     set_motor_speed(2, -1 * r_speed_ratio * speed)
 ### end 2.7.3
