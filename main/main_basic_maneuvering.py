@@ -1,7 +1,7 @@
 """
 Authors: Masafumi Endo
 Date: 04/10/2021
-Content: main function to drive car
+Content: main function to drive car by providing parameters
 """
 
 import sys
