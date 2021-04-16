@@ -20,7 +20,7 @@ The methods named **basic_maneuvering**, **parallel_parking**, and **three_point
 The method named **interface2drive** implements simple user-interface.
 
 ### picarx_organized.py
-The class version of picarx_improved.py. I actually did not check whether it works correctly.
+The class version of picarx_improved.py.
 
 ### main
 The folder named **main** contains all the necessary files to drive the car. I basically run the code inside this folder.
