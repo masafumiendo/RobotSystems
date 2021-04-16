@@ -6,9 +6,6 @@ Content: class for controller (3.3)
 
 import time
 
-from sensing import Sensor
-from interpretation import Interpretor
-
 class Controller:
 
     # initialization
