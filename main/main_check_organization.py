@@ -10,7 +10,7 @@ sys.path.append('..')
 from picarx_organized import *
 
 if __name__ == '__main__':
-    car = PicarX
+    car = PicarX()
     while True:
         speed = input('input speed: ')
         steer_angle = input('input steer angle: ')
