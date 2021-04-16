@@ -31,7 +31,10 @@ The folder named **main** contains all the necessary files to drive the car. I b
 The class for sensing using ground-scanning photo-sensors attached to the ADC pins.
 
 ### interpretation.py
-TBC
+The class for calculating relative position, or error.
 
 ### controller.py
-TBC
+The class implementing PD and PID control to drive the car while eliminating the error from the sensor.
+
+### integration.py
+The class integrating sensor and controller flow and drive autonomously by tracing line.
