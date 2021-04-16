@@ -24,3 +24,14 @@ The class version of picarx_improved.py.
 
 ### main
 The folder named **main** contains all the necessary files to drive the car. I basically run the code inside this folder.
+
+## Sensors and Control
+
+### sensing.py
+The class for sensing using ground-scanning photo-sensors attached to the ADC pins.
+
+### interpretation.py
+TBC
+
+### controller.py
+TBC
