@@ -30,25 +30,21 @@ import atexit
 
 import time
 
-class picarx:
-
-    def __init__(self, Servo, PWM, Pin):
-
-        self.Servo = Servo
-        self.PWM = PWM
-        self.Pin = Pin
+class PicarX:
+    # initialization
+    def __init__(self):
 
         self.PERIOD = 4095
         self.PRESCALER = 10
         self.TIMEOUT = 0.02
 
-        self.dir_servo_pin = self.Servo(self.PWM('P2'))
-        self.camera_servo_pin1 = self.Servo(self.PWM('P0'))
-        self.camera_servo_pin2 = self.Servo(self.PWM('P1'))
-        self.left_rear_pwm_pin = self.PWM("P13")
-        self.right_rear_pwm_pin = self.PWM("P12")
-        self.left_rear_dir_pin = self.Pin("D4")
-        self.right_rear_dir_pin = self.Pin("D5")
+        self.dir_servo_pin = Servo(PWM('P2'))
+        self.camera_servo_pin1 = Servo(PWM('P0'))
+        self.camera_servo_pin2 = Servo(PWM('P1'))
+        self.left_rear_pwm_pin = PWM("P13")
+        self.right_rear_pwm_pin = PWM("P12")
+        self.left_rear_dir_pin = Pin("D4")
+        self.right_rear_dir_pin = Pin("D5")
 
         self.S0 = ADC('A0')
         self.S1 = ADC('A1')
@@ -76,6 +72,7 @@ class picarx:
     ### end 2.9.3
 
     def set_motor_speed(self, motor, speed):
+
         motor -= 1
         if speed >= 0:
             direction = 1 * self.cali_dir_value[motor]
@@ -111,29 +108,34 @@ class picarx:
         if value == 1:
             self.cali_dir_value[motor] = -1*self.cali_dir_value[motor]
 
-
     def dir_servo_angle_calibration(self, value):
-        dir_cal_value = value
-        self.set_dir_servo_angle(dir_cal_value)
+
+        self.dir_cal_value = value
+        self.set_dir_servo_angle(self.dir_cal_value)
         # dir_servo_pin.angle(dir_cal_value)
 
     def set_dir_servo_angle(self, value):
+
         self.dir_servo_pin.angle(value+self.dir_cal_value)
 
     def camera_servo1_angle_calibration(self, value):
-        cam_cal_value_1 = value
-        self.set_camera_servo1_angle(cam_cal_value_1)
+
+        self.cam_cal_value_1 = value
+        self.set_camera_servo1_angle(self.cam_cal_value_1)
         # camera_servo_pin1.angle(cam_cal_value)
 
     def camera_servo2_angle_calibration(self, value):
-        cam_cal_value_2 = value
-        self.set_camera_servo2_angle(cam_cal_value_2)
+
+        self.cam_cal_value_2 = value
+        self.set_camera_servo2_angle(self.cam_cal_value_2)
         # camera_servo_pin2.angle(cam_cal_value)
 
     def set_camera_servo1_angle(self, value):
+
         self.camera_servo_pin1.angle(-1 *(value+self.cam_cal_value_1))
 
     def set_camera_servo2_angle(self, value):
+
         self.camera_servo_pin2.angle(-1 * (value+self.cam_cal_value_2))
 
     def get_adc_value(self):
@@ -177,7 +179,6 @@ class picarx:
         # adjust servo angle
         self.set_dir_servo_angle(steer_angle)
         # command speed w/ speed ratios
-        print('left speed ratio: {}, right speed ratio: {}'.format(l_speed_ratio, r_speed_ratio))
         self.set_motor_speed(1, -1 * l_speed_ratio * speed)
         self.set_motor_speed(2, -1 * r_speed_ratio * speed)
     ### end 2.7.3

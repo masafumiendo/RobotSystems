@@ -19,7 +19,7 @@ This implements improved version of picarx.py. The method named **forward** is m
 The methods named **basic_maneuvering**, **parallel_parking**, and **three_point_turning** are used for maneuvering the car.
 The method named **interface2drive** implements simple user-interface.
 
-### picarx_cls.py
+### picarx_organized.py
 The class version of picarx_improved.py. I actually did not check whether it works correctly.
 
 ### main
