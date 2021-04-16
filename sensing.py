@@ -8,8 +8,8 @@ from picarx_organized import PicarX
 
 class Sensor:
 
+    # initialization
     def __init__(self, car=PicarX()):
-
         self.car = car
         self.sensors = [self.car.S0, self.car.S1, self.car.S2]
 
