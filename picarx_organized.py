@@ -104,6 +104,7 @@ class PicarX:
     def motor_direction_calibration(self, motor, value):
         # 0: positive direction
         # 1:negative direction
+
         motor -= 1
         if value == 1:
             self.cali_dir_value[motor] = -1*self.cali_dir_value[motor]
