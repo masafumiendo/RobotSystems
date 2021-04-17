@@ -7,8 +7,19 @@ Content: main function to check PicarX class
 import sys
 sys.path.append('..')
 
-from picarx_organized import *
-from sensing import *
+### begin 2.5.3
+try:
+    from ezblock import *
+    from ezblock import __reset_mcu__
+    __reset_mcu__()
+    time.sleep(0.01)
+except ImportError:
+    print("This computer does not appear to be a PiCar-X system(/opt/ezblock is not present). Shadowing hardware calls with substitute functions")
+    from sim_ezblock import *
+### end 2.5.3
+
+from picarx_organized import PicarX
+from sensing import Sensor
 
 if __name__ == '__main__':
     car = PicarX()
