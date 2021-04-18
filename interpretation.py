@@ -20,11 +20,8 @@ class Interpretor:
         # calculate relative differences against target (center) value
         diff_l = vals[1] - vals[0]
         diff_r = vals[1] - vals[2]
-        print('left : {}, center : {}, right : {}'.format(vals[0], vals[1], vals[2]))
-        print('diff of left : {}, diff of right {}'.format(diff_l, diff_r))
         # follow darker color
         pos = self.sensitivity * (diff_l - diff_r)
-        print('relative pos : {}'.format(pos))
         if self.polarity == 1:
             # follow lighter color (change sign)
             pos = - 1 * pos
