@@ -18,4 +18,4 @@ if __name__ == '__main__':
     car = PicarX()
     sensor = Sensor(car)
     interpretor = Interpretor()
-    controller = Controller(sensor, interpretor)
+    # controller = Controller(sensor, interpretor)
