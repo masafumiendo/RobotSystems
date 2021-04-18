@@ -19,10 +19,7 @@ if __name__ == '__main__':
     sensor = Sensor(car)
     interpretor = Interpretor()
 
-    import time
-
     while True:
         vals = sensor.sensor_reading()
         pos = interpretor.calc_relative_pos(vals)
         print('relative positioning error : {}'.format(pos))
-        time.sleep(0.1)
