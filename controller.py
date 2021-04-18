@@ -14,7 +14,7 @@ class Controller:
         self.interpretor = interpretor
 
         # PID gain
-        self.kp = 0.5
+        self.kp = 10
         self.ki = 0
         self.kd = 0.4
 

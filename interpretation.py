@@ -28,10 +28,6 @@ class Interpretor:
         diff_r = vals[2] - val_t
         pos = self.sensitivity * (diff_l - diff_r)
 
-        print('left val : {}, center val : {}, right val : {}'.format(vals[0], vals[1], vals[2]))
-        print('diff left : {}, diff right : {}'.format(diff_l, diff_r))
-        print('relative pos : {}'.format(pos))
-
         if pos > 1:
             pos = 1
         elif pos < -1:
