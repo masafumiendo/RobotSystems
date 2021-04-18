@@ -17,20 +17,19 @@ class Interpretor:
 
     def calc_relative_pos(self, vals):
 
-        # calculate relative differences against target (center) value
-        diff_l = vals[1] - vals[0]
-        diff_r = vals[1] - vals[2]
-        # follow darker color
+        # set target value
+        if self.polarity == 0:
+            val_t = min(vals)
+        elif self.polarity == 1:
+            val_t = max(vals)
+
+        # calculate relative differences against target value
+        diff_l = vals[0] - val_t
+        diff_r = vals[2] - val_t
         pos = self.sensitivity * (diff_l - diff_r)
 
         print('left val : {}, center val : {}, right val : {}'.format(vals[0], vals[1], vals[2]))
         print('diff left : {}, diff right : {}'.format(diff_l, diff_r))
         print('relative pos : {}'.format(pos))
-
-        if self.polarity == 1:
-            # follow lighter color (change sign)
-            pos = - 1 * pos
-        if abs(pos) > 1:
-            pos = pos / abs(pos)
 
         return pos
