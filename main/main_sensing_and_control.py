@@ -15,3 +15,5 @@ from controller import Controller
 if __name__ == '__main__':
     car = PicarX()
     sensor = Sensor(car)
+    while True:
+        print(sensor.sensor_reading())
