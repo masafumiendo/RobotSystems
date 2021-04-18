@@ -4,10 +4,9 @@ Date: 04/10/2021
 Content: main function to sense line and follow it by PID controller
 """
 
+import time
 import sys
 sys.path.append('..')
-
-# import time
 
 from picarx_organized import PicarX
 from sensing import Sensor
@@ -24,4 +23,4 @@ if __name__ == '__main__':
         vals = sensor.sensor_reading()
         pos = interpretor.calc_relative_pos(vals)
         print('relative positioning error : {}'.format(pos))
-        # time.sleep(0.1)
+        time.sleep(0.1)
