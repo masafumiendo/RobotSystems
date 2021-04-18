@@ -30,7 +30,7 @@ import atexit
 
 import time
 
-class PicarX:
+class PicarX(object):
     # initialization
     def __init__(self):
 
