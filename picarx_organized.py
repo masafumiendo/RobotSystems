@@ -32,23 +32,28 @@ import time
 
 class PicarX:
     # initialization
-    def __init__(self):
+    def __init__(self, servo=Servo, pwm=PWM, pin=Pin, adc=ADC):
+
+        self.Servo = servo
+        self.PWM = pwm
+        self.Pin = pin
+        self.ADC = adc
 
         self.PERIOD = 4095
         self.PRESCALER = 10
         self.TIMEOUT = 0.02
 
-        self.dir_servo_pin = Servo(PWM('P2'))
-        self.camera_servo_pin1 = Servo(PWM('P0'))
-        self.camera_servo_pin2 = Servo(PWM('P1'))
-        self.left_rear_pwm_pin = PWM("P13")
-        self.right_rear_pwm_pin = PWM("P12")
-        self.left_rear_dir_pin = Pin("D4")
-        self.right_rear_dir_pin = Pin("D5")
+        self.dir_servo_pin = self.Servo(self.PWM('P2'))
+        self.camera_servo_pin1 = self.Servo(self.PWM('P0'))
+        self.camera_servo_pin2 = self.Servo(self.PWM('P1'))
+        self.left_rear_pwm_pin = self.PWM("P13")
+        self.right_rear_pwm_pin = self.PWM("P12")
+        self.left_rear_dir_pin = self.Pin("D4")
+        self.right_rear_dir_pin = self.Pin("D5")
 
-        self.S0 = ADC('A0')
-        self.S1 = ADC('A1')
-        self.S2 = ADC('A2')
+        self.S0 = self.ADC('A0')
+        self.S1 = self.ADC('A1')
+        self.S2 = self.ADC('A2')
 
         self.Servo_dir_flag = 1
         self.dir_cal_value = 0
@@ -191,8 +196,8 @@ class PicarX:
 
     def Get_distance(self):
         timeout=0.01
-        trig = Pin('D8')
-        echo = Pin('D9')
+        trig = self.Pin('D8')
+        echo = self.Pin('D9')
 
         trig.low()
         time.sleep(0.01)
