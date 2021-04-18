@@ -7,7 +7,7 @@ Content: class for interpretation (3.2)
 class Interpretor:
 
     # initialization
-    def __init__(self, sensitivity=0.8, polarity=0):
+    def __init__(self, sensitivity=1e-2, polarity=0):
         """
         :param sensitivity: value from 0 to 1
         :param polarity: value of 0 (follow darker color) or 1 (follow lighter color)
@@ -31,5 +31,10 @@ class Interpretor:
         print('left val : {}, center val : {}, right val : {}'.format(vals[0], vals[1], vals[2]))
         print('diff left : {}, diff right : {}'.format(diff_l, diff_r))
         print('relative pos : {}'.format(pos))
+
+        if pos > 1:
+            pos = 1
+        elif pos < -1:
+            pos = -1
 
         return pos
