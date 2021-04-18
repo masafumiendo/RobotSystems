@@ -4,16 +4,14 @@ Date: 04/15/2021
 Content: class for integration (3.4)
 """
 
-from picarx_organized import PicarX
-
 class Integrator:
 
     # initialization
-    def __init__(self, sensor, controller, speed=30, type_c="pd"):
+    def __init__(self, car, sensor, controller, speed=30, type_c="pd"):
         self.sensor = sensor
         self.controller = controller
 
-        self.car = PicarX()
+        self.car = car
 
         self.speed = speed
         self.type_c = type_c

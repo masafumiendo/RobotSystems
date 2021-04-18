@@ -26,6 +26,6 @@ class Interpretor:
             # follow lighter color (change sign)
             pos = - 1 * pos
         if abs(pos) > 1:
-            pos = float(pos / abs(pos))
+            pos = pos / abs(pos)
 
         return pos
