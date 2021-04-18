@@ -16,7 +16,7 @@ class Controller:
         # PID gain
         self.kp = 10
         self.ki = 0
-        self.kd = 0.4
+        self.kd = 5
 
         # I controller
         self.integral = 0
