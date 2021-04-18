@@ -4,6 +4,8 @@ Date: 04/15/2021
 Content: class for integration (3.4)
 """
 
+import time
+
 class Integrator:
 
     # initialization
@@ -18,9 +20,11 @@ class Integrator:
 
     def feedback_controller(self):
         steer_angle = self.controller.controller(self.type_c)
+        print('calculated steer angle {}'.format(steer_angle))
         self.car.forward(self.speed, steer_angle)
 
     def line_trace(self):
         # trace line while controlling steering angle
         while True:
             self.feedback_controller()
+            time.sleep(0.01)

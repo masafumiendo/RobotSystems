@@ -23,8 +23,4 @@ if __name__ == '__main__':
     controller = Controller(sensor, interpretor)
     integrator = Integrator(car, sensor, controller)
 
-    while True:
-        vals = sensor.sensor_reading()
-        pos = interpretor.calc_relative_pos(vals)
-        print('relative positioning error : {}'.format(pos))
-        time.sleep(0.1)
+    integrator.line_trace()
