@@ -18,4 +18,8 @@ if __name__ == '__main__':
     car = PicarX()
     sensor = Sensor(car)
     interpretor = Interpretor()
+    while True:
+        vals = sensor.sensor_reading()
+        pos = interpretor.calc_relative_pos(vals)
+        print(pos)
     # controller = Controller(sensor, interpretor)
