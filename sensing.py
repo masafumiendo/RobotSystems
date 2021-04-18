@@ -20,8 +20,7 @@ from picarx_organized import PicarX
 class Sensor:
 
     # initialization
-    def __init__(self, car):
-        self.car = car
+    def __init__(self):
         self.S0 = ADC('A0')
         self.S1 = ADC('A1')
         self.S2 = ADC('A2')
@@ -32,6 +31,6 @@ class Sensor:
 
 if __name__ == '__main__':
     car = PicarX()
-    sensor = Sensor(car)
+    sensor = Sensor()
     while True:
         print(sensor.sensor_reading())

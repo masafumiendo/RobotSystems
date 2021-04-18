@@ -15,8 +15,7 @@ from integration import Integrator
 
 if __name__ == '__main__':
     # call objects
-    car = PicarX()
-    sensor = Sensor(car)
+    sensor = Sensor()
     interpretor = Interpretor()
 
     while True:
