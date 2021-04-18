@@ -22,6 +22,11 @@ class Interpretor:
         diff_r = vals[1] - vals[2]
         # follow darker color
         pos = self.sensitivity * (diff_l - diff_r)
+
+        print('left val : {}, center val : {}, right val : {}'.format(vals[0], vals[1], vals[2]))
+        print('diff left : {}, diff right : {}'.format(diff_l, diff_r))
+        print('relative pos : {}'.format(pos))
+
         if self.polarity == 1:
             # follow lighter color (change sign)
             pos = - 1 * pos
