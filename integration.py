@@ -20,7 +20,6 @@ class Integrator:
 
     def feedback_controller(self):
         steer_angle = self.controller.controller(self.type_c)
-        print('calculated steer angle {}'.format(steer_angle))
         self.car.forward(self.speed, steer_angle)
 
     def line_trace(self):
