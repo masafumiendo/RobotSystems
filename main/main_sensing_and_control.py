@@ -4,7 +4,6 @@ Date: 04/10/2021
 Content: main function to sense line and follow it by PID controller
 """
 
-import time
 import sys
 sys.path.append('..')
 
@@ -19,6 +18,9 @@ if __name__ == '__main__':
     car = PicarX()
     sensor = Sensor(car)
     interpretor = Interpretor()
+
+    import time
+
     while True:
         vals = sensor.sensor_reading()
         pos = interpretor.calc_relative_pos(vals)
