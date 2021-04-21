@@ -38,3 +38,9 @@ The class implementing PD and PID control to drive the car while eliminating the
 
 ### integration.py
 The class integrating sensor and controller flow and drive autonomously by tracing line.
+
+### camera_sensing.py
+The file implementing **CameraSensor** and **CameraInterpretor** classes. The former class is used for reading data as image format, and the later class outputs relative positional error for PD/PID controllers based on acquired image data.
+
+## Simultaneity
+
