@@ -9,7 +9,9 @@ import time
 class Controller:
 
     # initialization
-    def __init__(self):
+    def __init__(self, type_c="pd"):
+
+        self.type_c = type_c
 
         # PID gain
         self.kp = 10
@@ -25,7 +27,7 @@ class Controller:
         # limit of steering angle
         self.steer_angle_th = 20
 
-    def controller(self, e_curr, type_c):
+    def controller(self, e_curr):
 
         # current values
         t_curr = time.time()
@@ -42,9 +44,9 @@ class Controller:
             d = self.kd * diff
 
             # PID or PD controller
-            if type_c == "pid":
+            if self.type_c == "pid":
                 res = p + i + d
-            elif type_c == "pd":
+            elif self.type_c == "pd":
                 res = p + d
         else:
             # P controller for the initial loop
