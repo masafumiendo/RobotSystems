@@ -20,7 +20,7 @@ if __name__ == '__main__':
     car = PicarX()
     sensor = Sensor()
     interpretor = Interpretor()
-    controller = Controller(sensor, interpretor)
-    integrator = Integrator(car, sensor, controller, speed=30)
+    controller = Controller()
+    integrator = Integrator(car, sensor, interpretor, controller, speed=30)
 
     integrator.line_trace()

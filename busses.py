@@ -4,14 +4,14 @@ Date: 04/21/2021
 Content: class for handle I/O
 """
 
-class SensorBus:
+class MessageBus:
 
     # initialization
     def __init__(self):
-        self.message = 0
+        self.message = None
 
-    def write(self):
-        pass
+    def write(self, message):
+        self.message = message
 
     def read(self):
         return self.message

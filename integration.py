@@ -9,8 +9,9 @@ import time
 class Integrator:
 
     # initialization
-    def __init__(self, car, sensor, controller, speed=30, type_c="pd"):
+    def __init__(self, car, sensor, interpretor, controller, speed=30, type_c="pd"):
         self.sensor = sensor
+        self.interpretor = interpretor
         self.controller = controller
 
         self.car = car
@@ -19,7 +20,9 @@ class Integrator:
         self.type_c = type_c
 
     def feedback_controller(self):
-        steer_angle = self.controller.controller(self.type_c)
+        vals = self.sensor.sensor_reading()
+        e_curr = self.interpretor.calc_relative_pos(vals)
+        steer_angle = self.controller.controller(e_curr, self.type_c)
         self.car.forward(self.speed, steer_angle)
 
     def line_trace(self):

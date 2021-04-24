@@ -9,9 +9,7 @@ import time
 class Controller:
 
     # initialization
-    def __init__(self, sensor, interpretor):
-        self.sensor = sensor
-        self.interpretor = interpretor
+    def __init__(self):
 
         # PID gain
         self.kp = 10
@@ -27,11 +25,9 @@ class Controller:
         # limit of steering angle
         self.steer_angle_th = 20
 
-    def controller(self, type_c):
+    def controller(self, e_curr, type_c):
 
         # current values
-        vals = self.sensor.sensor_reading()
-        e_curr = self.interpretor.calc_relative_pos(vals)
         t_curr = time.time()
 
         if self.e_prev != None:
