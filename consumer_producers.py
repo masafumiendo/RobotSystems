@@ -5,57 +5,38 @@ Content: class
 """
 import time
 from threading import Lock
-import concurrent.futures
 
-from picarx_organized import PicarX
-from sensing import Sensor
-from interpretation import Interpretor
-from controller import Controller
 
-from busses import MessageBus
+class ConcurrentExecuter:
 
-lock = Lock()
-sensor = Sensor()
-interpretor = Interpretor()
-controller = Controller()
-car = PicarX()
+    def __init__(self, sensor, interpretor, controller, car):
+        self.sensor = sensor
+        self.interpretor = interpretor
+        self.controller = controller
+        self.car = car
 
-def producer(bus_producer, delay_time):
+    def producer(self, bus_producer, delay_time):
 
-    while True:
-        with lock:
-            vals = sensor.sensor_reading()
-            bus_producer.write(vals)
-        time.sleep(delay_time)
+        lock = Lock()
 
-def consumer_producer(bus_consumer, bus_producer, delay_time):
+        while True:
+            with lock:
+                vals = self.sensor.sensor_reading()
+                bus_producer.write(vals)
+            time.sleep(delay_time)
 
-    while True:
-        vals = bus_producer.read()
-        pos = interpretor.calc_relative_pos(vals)
-        bus_consumer.write(pos)
-        time.sleep(delay_time)
+    def consumer_producer(self, bus_consumer, bus_producer, delay_time):
 
-def consumer(bus_consumer, delay_time):
+        while True:
+            vals = bus_producer.read()
+            pos = self.interpretor.calc_relative_pos(vals)
+            bus_consumer.write(pos)
+            time.sleep(delay_time)
 
-    while True:
-        e_curr = bus_consumer.read()
-        print(e_curr)
-        steer_angle = controller.controller(e_curr)
-        print(steer_angle)
-        car.forward(30, steer_angle)
+    def consumer(self, bus_consumer, delay_time):
 
-def main():
-
-    # initialization
-    bus_producer = MessageBus()
-    bus_consumer = MessageBus()
-
-    delay_time = 0.01
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-        eSencer = executor.submit(producer, bus_producer, delay_time)
-        eInterpretor = executor.submit(consumer_producer, bus_consumer, bus_producer, delay_time)
-        eController = executor.submit(consumer, bus_consumer, delay_time)
-
-if __name__ == '__main__':
-    main()
+        while True:
+            e_curr = bus_consumer.read()
+            steer_angle = self.controller.controller(e_curr)
+            self.car.forward(30, steer_angle)
+            time.sleep(delay_time)
