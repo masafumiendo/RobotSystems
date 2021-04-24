@@ -55,8 +55,8 @@ def main():
         eInterpretor = executor.submit(consumer_producer, bus_consumer, bus_producer, delay_time)
         eController = executor.submit(consumer, bus_consumer, delay_time)
 
-    eSencer.result()
-    eInterpretor.result()
+        eSencer.result()
+        eInterpretor.result()
 
 if __name__ == '__main__':
     main()
