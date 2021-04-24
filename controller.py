@@ -14,7 +14,7 @@ class Controller:
         # PID gain
         self.kp = 5
         self.ki = 1
-        self.kd = 2
+        self.kd = 0.5
 
         # I controller
         self.integral = 0
@@ -23,7 +23,7 @@ class Controller:
         self.e_prev = None
 
         # limit of steering angle
-        self.steer_angle_th = 40
+        self.steer_angle_th = 30
 
     def controller(self, e_curr, type_c):
 
