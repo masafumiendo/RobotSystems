@@ -21,6 +21,6 @@ if __name__ == '__main__':
     sensor = Sensor()
     interpretor = Interpretor()
     controller = Controller()
-    integrator = Integrator(car, sensor, interpretor, controller, speed=40, type_c="pid")
+    integrator = Integrator(car, sensor, interpretor, controller, speed=30, type_c="pd")
 
     integrator.line_trace()
