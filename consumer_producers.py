@@ -53,6 +53,7 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         eSencer = executor.submit(producer, bus_producer, delay_time)
         eInterpretor = executor.submit(consumer_producer, bus_consumer, bus_producer, delay_time)
+        eController = executor.submit(consumer, bus_consumer, delay_time)
 
     eSencer.result()
     eInterpretor.result()
