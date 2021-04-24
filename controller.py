@@ -12,7 +12,7 @@ class Controller:
     def __init__(self):
 
         # PID gain
-        self.kp = 10
+        self.kp = 5
         self.ki = 1
         self.kd = 2
 
