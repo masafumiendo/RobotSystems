@@ -23,7 +23,7 @@ class Controller:
         self.e_prev = None
 
         # limit of steering angle
-        self.steer_angle_th = 20
+        self.steer_angle_th = 40
 
     def controller(self, e_curr, type_c):
 
