@@ -25,6 +25,7 @@ def producer(bus_producer, delay_time):
     while True:
         with lock:
             vals = sensor.sensor_reading()
+            print(vals)
             bus_producer.write(vals)
         time.sleep(delay_time)
 
@@ -32,6 +33,7 @@ def consumer_producer(bus_consumer, bus_producer, delay_time):
 
     while True:
         vals = bus_producer.read()
+        print(vals)
         pos = interpretor.calc_relative_pos(vals)
         bus_consumer.write(pos)
         time.sleep(delay_time)
@@ -54,9 +56,6 @@ def main():
         eSencer = executor.submit(producer, bus_producer, delay_time)
         eInterpretor = executor.submit(consumer_producer, bus_consumer, bus_producer, delay_time)
         eController = executor.submit(consumer, bus_consumer, delay_time)
-
-        eSencer.result()
-        eInterpretor.result()
 
 if __name__ == '__main__':
     main()
