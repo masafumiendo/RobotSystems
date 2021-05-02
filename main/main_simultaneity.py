@@ -32,8 +32,8 @@ if __name__ == '__main__':
 
     delay_time = 0.01
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-        eSensor = executor.submit(concurrent_executor.photosensor, bus_producer, delay_time)
-        eInterpretor = executor.submit(concurrent_executor.photointerpretor, bus_consumer, bus_producer, delay_time)
+        eSensor = executor.submit(concurrent_executor.photo_sensing, bus_producer, delay_time)
+        eInterpretor = executor.submit(concurrent_executor.photo_interpretation, bus_consumer, bus_producer, delay_time)
         eController = executor.submit(concurrent_executor.steer_control, bus_consumer, delay_time)
 
     eSensor.result()
