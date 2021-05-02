@@ -35,13 +35,16 @@ class MultimodalExecuter(ConcurrentExecuter):
 
     def collision_avoidance(self, bus_consumer, delay_time):
 
+        lock = Lock()
+
         while True:
-            pos = bus_consumer.read()
-            print(pos)
-            if pos < 5:
-                speed = 0
-            else:
-                speed = 20
-            self.car.forward(speed, 0)
+            with lock:
+                pos = bus_consumer.read()
+                print(pos)
+                if pos < 5:
+                    speed = 0
+                else:
+                    speed = 20
+                self.car.forward(speed, 0)
 
             time.sleep(delay_time)
