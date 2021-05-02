@@ -22,7 +22,6 @@ class MultimodalExecuter(ConcurrentExecuter):
         while True:
             with lock:
                 val = self.ultrasonicsensor.sensor_reading()
-                print(val)
                 bus_producer.write(val)
             time.sleep(delay_time)
 
@@ -31,6 +30,7 @@ class MultimodalExecuter(ConcurrentExecuter):
         while True:
             val = bus_producer.read()
             pos = self.ultrasonicinterpretor.calc_relative_pos(val)
+            print(pos)
             bus_consumer.write(pos)
             time.sleep(delay_time)
 
