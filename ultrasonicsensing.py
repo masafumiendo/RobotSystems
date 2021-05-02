@@ -31,12 +31,8 @@ class UltrasonicSensor:
 class UltrasonicInterpretor:
 
     # initialization
-    def __init__(self, th):
-        self.th = th
+    def __init__(self):
+        pass
 
     def detect_obstacle(self, val):
-        if val < self.th:
-            flag = 1
-        else:
-            flag = 0
-        return flag
+        return val
