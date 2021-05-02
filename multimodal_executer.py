@@ -37,5 +37,5 @@ class MultimodalExecuter(ConcurrentExecuter):
 
         while True:
             flag = bus_consumer.read()
-            self.car.stop_flag(flag)
+            print(flag)
             time.sleep(delay_time)

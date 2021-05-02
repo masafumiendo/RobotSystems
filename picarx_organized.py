@@ -188,11 +188,6 @@ class PicarX(object):
         self.set_motor_speed(1, 0)
         self.set_motor_speed(2, 0)
 
-    def stop_flag(self, flag):
-        if flag:
-            self.set_motor_speed(1, 0)
-            self.set_motor_speed(2, 0)
-
     def Get_distance(self):
         timeout=0.01
         trig = Pin('D8')
