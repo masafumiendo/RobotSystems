@@ -28,7 +28,7 @@ if __name__ == '__main__':
     photosensor = PhotoSensor()
     photointerpretor = PhotoInterpretor()
     ultrasonicsensor = UltrasonicSensor()
-    ultrasonicinterpretor = UltrasonicInterpretor()
+    ultrasonicinterpretor = UltrasonicInterpretor(th=5)
     controller = Controller()
     car = PicarX()
 
