@@ -38,7 +38,7 @@ class MultimodalExecuter(ConcurrentExecuter):
         while True:
             pos = bus_consumer.read()
             print(pos)
-            self.car.forward(10, 0)
+            self.car.forward(20, 0)
             # if pos < 5:
             #     self.car.stop()
             # else:
