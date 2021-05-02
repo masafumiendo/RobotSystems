@@ -30,6 +30,7 @@ class MultimodalExecuter(ConcurrentExecuter):
         while True:
             val = bus_producer.read()
             flag = self.ultrasonicinterpretor.detect_obstacle(val)
+            print(flag)
             bus_consumer.write(flag)
             time.sleep(delay_time)
 
