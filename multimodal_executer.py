@@ -38,7 +38,5 @@ class MultimodalExecuter(ConcurrentExecuter):
 
         while True:
             pos = bus_consumer.read()
-            if pos < 5:
-                print('collision avoid!')
-                self.car.stop()
+            print(pos)
             time.sleep(delay_time)
