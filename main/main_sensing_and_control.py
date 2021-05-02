@@ -10,16 +10,15 @@ sys.path.append('..')
 import time
 
 from picarx_organized import PicarX
-from sensing import Sensor
-from interpretation import Interpretor
+from photosensing import PhotoSensor, PhotoInterpretor
 from controller import Controller
 from integration import Integrator
 
 if __name__ == '__main__':
     # call objects
     car = PicarX()
-    sensor = Sensor()
-    interpretor = Interpretor()
+    sensor = PhotoSensor()
+    interpretor = PhotoInterpretor()
     controller = Controller()
     integrator = Integrator(car, sensor, interpretor, controller, speed=30)
 
