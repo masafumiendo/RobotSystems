@@ -30,6 +30,7 @@ class MultimodalExecuter(ConcurrentExecuter):
         while True:
             val = bus_producer.read()
             pos = self.ultrasonicinterpretor.calc_relative_pos(val)
+            print(pos)
             if pos < 5:
                 print('collision avoid!')
                 self.car.stop()
