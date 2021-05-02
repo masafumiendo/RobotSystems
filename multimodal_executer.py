@@ -30,8 +30,10 @@ class MultimodalExecuter(ConcurrentExecuter):
         while True:
             val = bus_producer.read()
             pos = self.ultrasonicinterpretor.calc_relative_pos(val)
+            if pos < 5:
+                print('collision avoid!')
+                self.car.stop()
             bus_consumer.write(pos)
-            print(bus_consumer.message)
             time.sleep(delay_time)
 
     def collision_avoidance(self, bus_consumer, delay_time):
