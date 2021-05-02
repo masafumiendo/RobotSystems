@@ -35,7 +35,7 @@ if __name__ == '__main__':
     multimodal_executor = MultimodalExecuter(photosensor, photointerpretor, controller, car, ultrasonicsensor, ultrasonicinterpretor)
 
     delay_time = 0.01
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.submit(multimodal_executor.photo_sensing, photo_producer, delay_time)
         executor.submit(multimodal_executor.photo_interpretation, photo_consumer, photo_producer, delay_time)
         executor.submit(multimodal_executor.steer_control, photo_consumer, delay_time)
