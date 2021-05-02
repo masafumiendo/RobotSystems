@@ -37,6 +37,6 @@ class MultimodalExecuter(ConcurrentExecuter):
 
         while True:
             pos = bus_consumer.read()
-            if pos < 10:
+            if pos < 5:
                 self.car.forward(0, 0)
             time.sleep(delay_time)
