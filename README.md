@@ -44,3 +44,16 @@ The file implementing **CameraSensor** and **CameraInterpretor** classes. The fo
 
 ## Simultaneity
 
+TBD
+
+## Multimodal Control
+
+### multimodal_executer.py
+This file contains a class to execute multimodal control (line trace w/ photo-sensing and object detection w/ ultrasonic sensing).
+Since this is the extension of **ConcurrentExecuter**, this file inherits the class.
+
+### ultrasonicsensing.py
+This file contains **UltrasonicSensor** and **UltrasonicInterpretor** classes to detect obstacles.
+
+### main/main_multimodal_control.py
+This file is used for execute multimodal control.
