@@ -44,6 +44,8 @@ class Perception:
         self.color_list = []
         self.count = 0
 
+        self.detect_color = 'None'
+
     def perception(self, img, start_pick_up):
         """
         function to perceive objects (same role as run() function of original codes)
@@ -122,23 +124,23 @@ class Perception:
                         color = int(round(np.mean(np.array(self.color_list))))
                         self.color_list = []
                         if color == 1:
-                            detect_color = 'red'
+                            self.detect_color = 'red'
                             draw_color = self.range_rgb["red"]
                         elif color == 2:
-                            detect_color = 'green'
+                            self.detect_color = 'green'
                             draw_color = self.range_rgb["green"]
                         elif color == 3:
-                            detect_color = 'blue'
+                            self.detect_color = 'blue'
                             draw_color = self.range_rgb["blue"]
                         else:
-                            detect_color = 'None'
+                            self.detect_color = 'None'
                             draw_color = self.range_rgb["black"]
             else:
                 if not start_pick_up:
                     draw_color = (0, 0, 0)
-                    detect_color = "None"
+                    self.detect_color = "None"
 
-        cv2.putText(img, "Color: " + detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color, 2)
+        cv2.putText(img, "Color: " + self.detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color, 2)
         return img
 
     def __image_converter(self, img):
