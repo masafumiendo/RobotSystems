@@ -32,6 +32,7 @@ class Motion:
     def stacking(self, world_x, world_y, rotation_angle, color):
 
         if color == 'red':
+            print('first floor detected!')
             # register 1st floor's information
             self.color_prev = color
             self.target_x = world_x
