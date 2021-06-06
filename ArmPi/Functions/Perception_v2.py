@@ -41,9 +41,8 @@ class Perception:
         self.roi = None
         self.get_roi = False
         self.detected_color = None
-        self.start_pick_up = False
 
-    def perception(self, img):
+    def perception(self, img, start_pick_up):
 
         img_copy = img.copy()
         frame_lab = self.__image_converter(img_copy)
@@ -53,7 +52,7 @@ class Perception:
         self.detected_color = "None"
         draw_color = "black"
         world_x, world_y, rotation = None, None, None
-        if not self.start_pick_up:
+        if not start_pick_up:
             for color in color_range:
                 if color in self.target_color:
                     areaMaxContour, area_max = self.__get_max_area_contour(frame_lab, color)
@@ -65,7 +64,7 @@ class Perception:
                             self.detected_color = color
                             draw_color = color
             if max_area_max > 2500:
-                world_x, world_y, rotation = self.get_world_location(areaMaxContour_max, display_img=img)
+                world_x, world_y, rotation = self.__coordinates_converter(areaMaxContour_max, display_img=img)
 
         cv2.putText(img, "Color: " + self.detected_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, self.range_rgb[draw_color], 2)
 
@@ -84,72 +83,66 @@ class Perception:
 
         return frame_lab
 
-        # helper function for finding the largest area given contours
-    def getAreaMaxContour(self, contours):
-            contour_area_temp = 0
-            contour_area_max = 0
-            area_max_contour = None
-
-            for c in contours:
-                contour_area_temp = math.fabs(cv2.contourArea(c))
-                if contour_area_temp > contour_area_max:
-                    contour_area_max = contour_area_temp
-                    if contour_area_temp > 300:
-                        area_max_contour = c
-
-            return area_max_contour, contour_area_max
-
     def __get_max_area_contour(self, frame_lab, color):
 
         frame_mask = cv2.inRange(frame_lab, color_range[color][0], color_range[color][1])  # Bitwise operations on the original image and mask
         opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Open Arithmetic
         closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Closed operations
         contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2] # Find the outline
-        areaMaxContour, area_max = self.getAreaMaxContour(contours)  # Find the maximum profile
+        areaMaxContour, area_max = self.__getAreaMaxContour(contours)  # Find the maximum profile
 
         return areaMaxContour, area_max
 
-    def get_world_location(self, contour, display_img=None):
+    def __getAreaMaxContour(self, contours):
+        contour_area_temp = 0
+        contour_area_max = 0
+        area_max_contour = None
+
+        for c in contours:
+            contour_area_temp = math.fabs(cv2.contourArea(c))
+            if contour_area_temp > contour_area_max:
+                contour_area_max = contour_area_temp
+                if contour_area_temp > 300:
+                    area_max_contour = c
+
+        return area_max_contour, contour_area_max
+
+    def __coordinates_converter(self, contour, display_img=None):
 
         rect = cv2.minAreaRect(contour)
         rotation_angle = rect[2]
         box = np.int0(cv2.boxPoints(rect))
 
-        self.roi = getROI(box) # get the area of the region of interest
+        self.roi = getROI(box) #Get roi area
         self.get_roi = True
 
-        img_centerx, img_centery = getCenter(rect, self.roi, self.size, square_length)  # get the center of the box
-        world_x, world_y = convertCoordinate(img_centerx, img_centery, self.size) # convert from image to world coordinates
+        img_centerx, img_centery = getCenter(rect, self.roi, self.size, square_length)  # Get the coordinates of the center of the block
+        world_x, world_y = convertCoordinate(img_centerx, img_centery, self.size) # Convert to real world coordinates
 
         if display_img is not None:
-            # draw contour
             cv2.drawContours(display_img, [box], -1, self.range_rgb[self.detected_color], 2)
 
-            # draw center point
             cv2.putText(display_img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[self.detected_color], 1)
 
         return world_x, world_y, rotation_angle
 
-def main():
+if __name__ == "__main__":
 
     target_color = ("red")
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
     perception = Perception(target_color)
+
     while True:
         img = my_camera.frame
         if img is not None:
-            display_img = img.copy()
-            world_x, world_y, rotation_angle, color = perception.perception(display_img)
-            cv2.imshow('Frame', display_img)
+            frame = img.copy()
+            world_x, world_y, rotation_angle, color = perception.perception(frame, start_pick_up=False)
+            cv2.imshow('Frame', frame)
             key = cv2.waitKey(1)
             if key == 27:
                 break
     my_camera.camera_close()
     cv2.destroyAllWindows()
-
-if __name__ == "__main__":
-
-    main()
