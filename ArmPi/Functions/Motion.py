@@ -9,7 +9,6 @@ import Camera
 from ArmIK.Transform import getAngle
 from ArmIK.ArmMoveIK import ArmIK
 import HiwonderSDK.Board as Board
-import atexit
 
 from Perception import Perception
 
@@ -29,7 +28,6 @@ class Motion:
             'blue':   (-15 + 0.5, 0 - 0.5,  1.5),
             'pallet': (-15 + 1, -7 - 0.5, 1.5),
         }
-        atexit.register(self.__initMove)
 
     def sort(self, block_x, block_y, block_rotation, block_color):
 
