@@ -139,13 +139,13 @@ if __name__ == "__main__":
             frame = img.copy()
             world_x, world_y, rotation_angle, color = perception.perception(frame, start_pick_up=False)
             cv2.imshow('Frame', frame)
-
+            print(cnt_img)
             key = cv2.waitKey(1)
             if key == 27:
                 break
             if world_x is not None and cnt_img >= 1:
                 motion.sort(world_x, world_y, rotation_angle, color)
-                
+
             cnt_img += 1
 
     my_camera.camera_close()
