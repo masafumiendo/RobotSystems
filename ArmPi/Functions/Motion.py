@@ -126,7 +126,7 @@ if __name__ == "__main__":
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
-    target_color = ("red", "blue", "green")
+    target_color = ("red", "green", "blue")
     perception = Perception()
 
     motion = Motion()
