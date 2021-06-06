@@ -165,9 +165,10 @@ if __name__ == "__main__":
                 motion.stacking(world_x, world_y, rotation_angle, color)
                 if color == 'red':
                     floor += 1
-                elif color == 'blue':
+                elif color == 'blue' or color == 'green':
                     _, _, _, color_ = perception.perception(frame, target_color[floor-1], start_pick_up=False)
                     if color_ == "None":
+                        print('stacking is performed!')
                         floor += 1
                     else:
                         continue
