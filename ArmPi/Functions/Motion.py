@@ -145,16 +145,17 @@ if __name__ == "__main__":
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
-    target_color = ("red", "green", "blue")
+    target_color = ("red", "blue", "green")
     perception = Perception()
 
     motion = Motion()
     cnt_img = 0
+    floor = 0
     while True:
         img = my_camera.frame
         if img is not None:
             frame = img.copy()
-            world_x, world_y, rotation_angle, color = perception.perception(frame, target_color, start_pick_up=False)
+            world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[floor], start_pick_up=False)
             cv2.imshow('Frame', frame)
 
             key = cv2.waitKey(1)
@@ -162,10 +163,14 @@ if __name__ == "__main__":
                 break
             if world_x is not None and cnt_img >= 1:
                 motion.stacking(world_x, world_y, rotation_angle, color)
-                if color == "red":
-                    target_color = list(target_color)
-                    target_color.remove(color)
-                    target_color = tuple(target_color)
+                if color == 'red':
+                    floor += 1
+                elif color == 'blue':
+                    _, _, _, color_ = perception.perception(frame, target_color[floor-1], start_pick_up=False)
+                    if color_ == "None":
+                        floor += 1
+                    else:
+                        continue
 
             cnt_img += 1
 
