@@ -44,7 +44,7 @@ class Perception:
         self.color_list = []
         self.count = 0
 
-        self.detect_color = 'None'
+        self.detect_color = None
 
     def perception(self, img, start_pick_up):
         """

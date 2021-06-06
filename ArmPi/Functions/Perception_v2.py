@@ -44,7 +44,6 @@ class Perception:
 
     def perception(self, img):
 
-        # make a copy of the image and draw calibration lines
         img_copy = img.copy()
         frame_lab = self.__image_converter(img_copy)
 
@@ -57,14 +56,14 @@ class Perception:
             for color in color_range:
                 if color in self.target_color:
                     areaMaxContour, area_max = self.find_largest_area(frame_lab, color)
-                    # maximize over the different colors
+
                     if areaMaxContour is not None:
                         if area_max > max_area_max:
                             areaMaxContour_max = areaMaxContour
                             max_area_max = area_max
                             self.detected_color = color
                             draw_color = color
-            if max_area_max > 2500:  # check if the area is large enough to indicate we found a block
+            if max_area_max > 2500:
                 world_x, world_y, rotation = self.get_world_location(areaMaxContour_max, display_img=img)
 
         cv2.putText(img, "Color: " + self.detected_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, self.range_rgb[draw_color], 2)
