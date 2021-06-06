@@ -157,9 +157,6 @@ if __name__ == "__main__":
         if img is not None:
             frame = img.copy()
             frame_checked_ = img.copy()
-            print('----------------')
-            print(target_color[floor])
-            print('----------------')
             world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[floor], start_pick_up=False)
             cv2.imshow('Frame', frame)
 
@@ -168,18 +165,7 @@ if __name__ == "__main__":
                 break
             if world_x is not None and cnt_img >= 1:
                 motion.stacking(world_x, world_y, rotation_angle, color)
-                if color == 'red':
-                    floor += 1
-                elif color == 'blue' or color == 'green':
-                    _, _, _, color_ = perception.perception(frame_checked_, target_color[floor-1], start_pick_up=False)
-                    print('==========')
-                    print(color_)
-                    print('==========')
-                    if color_ == "None":
-                        print('stacking is performed!')
-                        floor += 1
-                    else:
-                        continue
+                floor += 1
 
             cnt_img += 1
 
