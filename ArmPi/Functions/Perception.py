@@ -140,7 +140,7 @@ class Perception:
                     draw_color = (0, 0, 0)
                     self.detect_color = "None"
 
-        cv2.putText(img, "Color: " + self.detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, self.range_rgb[self.detect_color], 2)
+        cv2.putText(img, "Color: " + self.detect_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, draw_color, 2)
         return img
 
     def __image_converter(self, img):
