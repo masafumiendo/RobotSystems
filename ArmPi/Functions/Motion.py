@@ -127,7 +127,7 @@ if __name__ == "__main__":
     my_camera.camera_open()
 
     target_color = ("red", "blue", "green")
-    perception = Perception(target_color)
+    perception = Perception()
 
     motion = Motion()
     cnt_img = 0
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         img = my_camera.frame
         if img is not None:
             frame = img.copy()
-            world_x, world_y, rotation_angle, color = perception.perception(frame, start_pick_up=False)
+            world_x, world_y, rotation_angle, color = perception.perception(frame, target_color, start_pick_up=False)
             cv2.imshow('Frame', frame)
 
             key = cv2.waitKey(1)

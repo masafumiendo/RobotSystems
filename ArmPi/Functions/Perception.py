@@ -25,9 +25,7 @@ AK = ArmIK()
 
 class Perception:
 
-    def __init__(self, target_color):
-
-        self.target_color = target_color
+    def __init__(self):
 
         self.range_rgb = {
             'red': (0, 0, 255),
@@ -42,7 +40,7 @@ class Perception:
         self.get_roi = False
         self.detected_color = None
 
-    def perception(self, img, start_pick_up):
+    def perception(self, img, target_color, start_pick_up):
 
         img_copy = img.copy()
         frame_lab = self.__image_converter(img_copy)
@@ -54,7 +52,7 @@ class Perception:
         world_x, world_y, rotation = None, None, None
         if not start_pick_up:
             for color in color_range:
-                if color in self.target_color:
+                if color in target_color:
                     areaMaxContour, area_max = self.__get_max_area_contour(frame_lab, color)
 
                     if areaMaxContour is not None:
@@ -133,13 +131,13 @@ if __name__ == "__main__":
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
-    perception = Perception(target_color)
+    perception = Perception()
 
     while True:
         img = my_camera.frame
         if img is not None:
             frame = img.copy()
-            world_x, world_y, rotation_angle, color = perception.perception(frame, start_pick_up=False)
+            world_x, world_y, rotation_angle, color = perception.perception(frame, target_color, start_pick_up=False)
             cv2.imshow('Frame', frame)
             key = cv2.waitKey(1)
             if key == 27:
