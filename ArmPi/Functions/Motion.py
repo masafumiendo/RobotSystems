@@ -2,14 +2,15 @@
 #!/usr/bin/python3
 # coding=utf8
 import sys
-
 sys.path.append('/home/pi/ArmPi/')
 import cv2
 import time
+import Camera
 from ArmIK.Transform import getAngle
 from ArmIK.ArmMoveIK import ArmIK
 import HiwonderSDK.Board as Board
-import atexit
+
+from Perception import Perception
 
 class Motion:
 
@@ -28,8 +29,6 @@ class Motion:
             'pallet': (-15 + 1, -7 - 0.5, 1.5),
         }
 
-        atexit.register(self.reset)
-
     def sort(self, block_x, block_y, block_rotation, block_color):
 
         if not block_color in ['red', 'green', 'blue']:
@@ -37,14 +36,14 @@ class Motion:
 
         place_x, place_y, place_z = self.coordinates[block_color]
 
-        if not self.init_move(block_x, block_y):
+        if not self.__check_reachable(block_x, block_y):
             return False
 
-        self.pick(block_x, block_y, self.base_z, block_rotation)
+        self.__pick(block_x, block_y, self.base_z, block_rotation)
 
-        self.place(place_x, place_y, place_z)
+        self.__place(place_x, place_y, place_z)
 
-        self.reset()
+        self.__initMove()
 
     def palletize(self, block_x, block_y, block_rotation):
 
@@ -52,26 +51,26 @@ class Motion:
 
         place_z += self.block_height * self.num_stacked
 
-        if not self.init_move(block_x, block_y):
+        if not self.__check_reachable(block_x, block_y):
             return False
 
-        self.pick(block_x, block_y, self.base_z, block_rotation)
+        self.__pick(block_x, block_y, self.base_z, block_rotation)
 
-        self.place(place_x, place_y, place_z)
+        self.__place(place_x, place_y, place_z)
 
-        self.reset()
+        self.__initMove()
         self.num_stacked += 1
         self.num_stacked %= 3
 
-    def pick(self, x, y, z, rotation):
+    def __pick(self, x, y, z, rotation):
 
         servo2_angle = getAngle(x, y, rotation)
         Board.setBusServoPulse(1, self.servo1 - 280, 500)
         Board.setBusServoPulse(2, servo2_angle, 500)
         time.sleep(0.5)
 
-        if not self.init_move(x, y, z):
-            print("Pick failed: (%.3f, %.3f, %.3f)" % (x, y, z))
+        if not self.__check_reachable(x, y, z):
+            print("could not pick the target!")
             return
 
         Board.setBusServoPulse(1, self.servo1, 500)
@@ -81,10 +80,10 @@ class Motion:
         self.AK.setPitchRangeMoving((x, y, 12), -90, -90, 0, 1000)
         time.sleep(1)
 
-    def place(self, x, y, z, rotation=-90):
+    def __place(self, x, y, z, rotation=-90):
 
-        if not self.init_move(x, y, z + 6):
-            print("Place unreachable: (%.3f, %.3f, %.3f)" % (x, y, z))
+        if not self.__check_reachable(x, y, z + 6):
+            print("could not reach the position!")
             return
 
         servo2_angle = getAngle(x, y, rotation)
@@ -103,20 +102,17 @@ class Motion:
         self.AK.setPitchRangeMoving((x, y, 12), -90, -90, 0, 800)
         time.sleep(0.8)
 
-    # initial move, returns false if unreachable, otherwise makes initial motion
-    def init_move(self, x, y, z=7):
-
+    def __check_reachable(self, x, y, z=7):
         result = self.AK.setPitchRangeMoving((x, y, z), -90, -90, 0)
         if result == False:
-            return False
+            reachable = False
         else:
-            # wait for motion to execute
             time.sleep(result[2]/1000)
+            reachable = True
 
-            return True
+        return reachable
 
-    # return to default position
-    def reset(self):
+    def __initMove(self):
         Board.setBusServoPulse(1, self.servo1 - 250, 300)
         time.sleep(0.5)
         Board.setBusServoPulse(1, self.servo1 - 50, 300)
@@ -127,22 +123,9 @@ class Motion:
 
 if __name__ == "__main__":
 
-    import sys
-    arg_info = "Requires 1 argument for action to take: pick from [sort, palletize]"
-    if len(sys.argv) != 2:
-        print(arg_info)
-    elif not sys.argv[1] in ["sort", "palletize"]:
-        print(arg_info)
-    if sys.argv[1] != "palletize":
-        sort = True
-    else:
-        sort = False
-
-    import Camera
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
-    from Perception import Perception
     target_color = ("red", "blue", "green")
     p = Perception(target_color)
 
@@ -158,10 +141,7 @@ if __name__ == "__main__":
             if key == 27:
                 break
             if world_x is not None:
-                if sort:
-                    motion.sort(world_x, world_y, rotation_angle, color)
-                else:
-                    motion.palletize(world_x, world_y, rotation_angle)
+                motion.sort(world_x, world_y, rotation_angle, color)
 
     my_camera.camera_close()
     cv2.destroyAllWindows()
