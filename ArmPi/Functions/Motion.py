@@ -132,14 +132,14 @@ if __name__ == "__main__":
     perception = Perception(target_color)
 
     motion = Motion()
+    cnt_img = 0
     while True:
-        cnt_img = 0
         img = my_camera.frame
         if img is not None:
             frame = img.copy()
             world_x, world_y, rotation_angle, color = perception.perception(frame, start_pick_up=False)
             cv2.imshow('Frame', frame)
-            print(cnt_img)
+
             key = cv2.waitKey(1)
             if key == 27:
                 break
