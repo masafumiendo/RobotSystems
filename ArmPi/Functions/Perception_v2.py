@@ -42,39 +42,45 @@ class Perception:
         self.detected_color = None
         self.start_pick_up = False
 
-    def draw_calibration_lines(self, img):
+    def perception(self, img):
+
+        # make a copy of the image and draw calibration lines
+        img_copy = img.copy()
+        frame_lab = self.__image_converter(img_copy)
+
+        max_area_max = 0
+        areaMaxContour_max = 0
+        self.detected_color = "None"
+        draw_color = "black"
+        world_x, world_y, rotation = None, None, None
+        if not self.start_pick_up:
+            for color in color_range:
+                if color in self.target_color:
+                    areaMaxContour, area_max = self.find_largest_area(frame_lab, color)
+                    # maximize over the different colors
+                    if areaMaxContour is not None:
+                        if area_max > max_area_max:
+                            areaMaxContour_max = areaMaxContour
+                            max_area_max = area_max
+                            self.detected_color = color
+                            draw_color = color
+            if max_area_max > 2500:  # check if the area is large enough to indicate we found a block
+                world_x, world_y, rotation = self.get_world_location(areaMaxContour_max, display_img=img)
+
+        cv2.putText(img, "Color: " + self.detected_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, self.range_rgb[draw_color], 2)
+
+        return world_x, world_y, rotation, self.detected_color
+
+    def __image_converter(self, img):
 
         img_h, img_w = img.shape[:2]
         cv2.line(img, (0, int(img_h / 2)), (img_w, int(img_h / 2)), (0, 0, 200), 1)
         cv2.line(img, (int(img_w / 2), 0), (int(img_w / 2), img_h), (0, 0, 200), 1)
 
-        return img
+        frame_resize = cv2.resize(img, self.size, interpolation=cv2.INTER_NEAREST)
+        frame_gb = cv2.GaussianBlur(frame_resize, (11, 11), 11)
 
-    def resize(self, img):
-
-        return cv2.resize(img, self.size, interpolation=cv2.INTER_NEAREST)
-
-    def apply_blur(self, img):
-
-        return cv2.GaussianBlur(img, (11, 11), 11)
-
-    def apply_ROI_mask(self, img):
-
-        return getMaskROI(img, self.roi, self.size)
-
-    def preprocess_image(self, img):
-
-        # resize the image and add gaussian blur
-        frame_resize = self.resize(img)
-        frame_gb = self.apply_blur(frame_resize)
-
-        # if we already detected an object somewhere, we'll only look in that area until we can't find it anymore
-        if self.get_roi and not self.start_pick_up:
-            self.get_roi = False
-            frame_gb = self.apply_ROI_mask(frame_gb)
-
-            # convert RGB to Lab
-        frame_lab = cv2.cvtColor(frame_gb, cv2.COLOR_BGR2LAB)
+        frame_lab = cv2.cvtColor(frame_gb, cv2.COLOR_BGR2LAB)  # Convert images to LAB space
 
         return frame_lab
 
@@ -124,38 +130,6 @@ class Perception:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[self.detected_color], 1)
 
         return world_x, world_y, rotation_angle
-
-    def perception(self, img):
-
-        # make a copy of the image and draw calibration lines
-        img_copy = img.copy()
-        self.draw_calibration_lines(img)
-
-        # preprocess the image
-        img_lab = self.preprocess_image(img_copy)
-
-        max_area_max = 0
-        areaMaxContour_max = 0
-        self.detected_color = "None"
-        draw_color = "black"
-        world_x, world_y, rotation = None, None, None
-        if not self.start_pick_up:
-            for color in color_range:
-                if color in self.target_color:
-                    areaMaxContour, area_max = self.find_largest_area(img_lab, color)
-                    # maximize over the different colors
-                    if areaMaxContour is not None:
-                        if area_max > max_area_max:
-                            areaMaxContour_max = areaMaxContour
-                            max_area_max = area_max
-                            self.detected_color = color
-                            draw_color = color
-            if max_area_max > 2500:  # check if the area is large enough to indicate we found a block
-                world_x, world_y, rotation = self.get_world_location(areaMaxContour_max, display_img=img)
-
-        cv2.putText(img, "Color: " + self.detected_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, self.range_rgb[draw_color], 2)
-
-        return world_x, world_y, rotation, self.detected_color
 
 def main():
 
