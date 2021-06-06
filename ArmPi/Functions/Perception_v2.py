@@ -55,7 +55,7 @@ class Perception:
         if not self.start_pick_up:
             for color in color_range:
                 if color in self.target_color:
-                    areaMaxContour, area_max = self.find_largest_area(frame_lab, color)
+                    areaMaxContour, area_max = self.__get_max_area_contour(frame_lab, color)
 
                     if areaMaxContour is not None:
                         if area_max > max_area_max:
@@ -83,10 +83,8 @@ class Perception:
 
         return frame_lab
 
-    def find_largest_area(self, img, color):
-
         # helper function for finding the largest area given contours
-        def getAreaMaxContour(contours):
+    def getAreaMaxContour(self, contours):
             contour_area_temp = 0
             contour_area_max = 0
             area_max_contour = None
@@ -100,11 +98,13 @@ class Perception:
 
             return area_max_contour, contour_area_max
 
-        frame_mask = cv2.inRange(img, color_range[color][0], color_range[color][1])  # find part of image in the color's range
-        opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # erosion then dilation -> remove external noise
-        closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # dilation then erosion -> close internal holes
-        contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  # find outlines
-        areaMaxContour, area_max = getAreaMaxContour(contours)  # find the largest contour
+    def __get_max_area_contour(self, frame_lab, color):
+
+        frame_mask = cv2.inRange(frame_lab, color_range[color][0], color_range[color][1])  # Bitwise operations on the original image and mask
+        opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Open Arithmetic
+        closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Closed operations
+        contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2] # Find the outline
+        areaMaxContour, area_max = self.getAreaMaxContour(contours)  # Find the maximum profile
 
         return areaMaxContour, area_max
 
