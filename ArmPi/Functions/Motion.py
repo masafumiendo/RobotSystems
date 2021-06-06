@@ -29,6 +29,24 @@ class Motion:
             'pallet': (-15 + 1, -7 - 0.5, 1.5),
         }
 
+    def stacking(self, world_x, world_y, rotation_angle, color):
+
+        if color == 'red':
+            # register 1st floor's information
+            self.color_prev = color
+            self.target_x = world_x
+            self.target_y = world_y
+            self.target_z = self.base_z
+            self.target_angle = rotation_angle
+            self.num_stacked += 1
+            self.num_stacked %= 3
+            return
+        else:
+            self.target_z += self.block_height * self.num_stacked
+            self.__pick(world_x, world_y, self.base_z, rotation_angle)
+            self.__place(self.target_x, self.target_y, self.target_z)
+            self.__initMove()
+
     def sort(self, block_x, block_y, block_rotation, block_color):
 
         if not block_color in ['red', 'green', 'blue']:
@@ -142,7 +160,11 @@ if __name__ == "__main__":
             if key == 27:
                 break
             if world_x is not None and cnt_img >= 1:
-                motion.sort(world_x, world_y, rotation_angle, color)
+                motion.stacking(world_x, world_y, rotation_angle, color)
+                if color == "red":
+                    target_color = list(target_color)
+                    target_color.remove(color)
+                    target_color = tuple(target_color)
 
             cnt_img += 1
 
