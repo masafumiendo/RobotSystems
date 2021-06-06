@@ -142,7 +142,7 @@ if __name__ == "__main__":
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
-    from perception import Perception
+    from Perception import Perception
     target_color = ("red", "blue", "green")
     p = Perception(target_color)
 
