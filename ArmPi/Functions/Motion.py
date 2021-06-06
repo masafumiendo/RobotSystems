@@ -133,17 +133,20 @@ if __name__ == "__main__":
 
     motion = Motion()
     while True:
+        cnt_img = 0
         img = my_camera.frame
         if img is not None:
-            display_img = img.copy()
-            world_x, world_y, rotation_angle, color = perception.perception(display_img, start_pick_up=False)
-            cv2.imshow('Frame', display_img)
+            frame = img.copy()
+            world_x, world_y, rotation_angle, color = perception.perception(frame, start_pick_up=False)
+            cv2.imshow('Frame', frame)
 
             key = cv2.waitKey(1)
             if key == 27:
                 break
-            if world_x is not None:
+            if world_x is not None and cnt_img >= 1:
                 motion.sort(world_x, world_y, rotation_angle, color)
+                
+            cnt_img += 1
 
     my_camera.camera_close()
     cv2.destroyAllWindows()
