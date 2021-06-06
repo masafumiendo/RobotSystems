@@ -9,6 +9,7 @@ import Camera
 from ArmIK.Transform import getAngle
 from ArmIK.ArmMoveIK import ArmIK
 import HiwonderSDK.Board as Board
+import atexit
 
 from Perception import Perception
 
@@ -28,6 +29,7 @@ class Motion:
             'blue':   (-15 + 0.5, 0 - 0.5,  1.5),
             'pallet': (-15 + 1, -7 - 0.5, 1.5),
         }
+        atexit.register(self.__initMove)
 
     def sort(self, block_x, block_y, block_rotation, block_color):
 
@@ -127,14 +129,14 @@ if __name__ == "__main__":
     my_camera.camera_open()
 
     target_color = ("red", "blue", "green")
-    p = Perception(target_color)
+    perception = Perception(target_color)
 
     motion = Motion()
     while True:
         img = my_camera.frame
         if img is not None:
             display_img = img.copy()
-            world_x, world_y, rotation_angle, color = p.perception(display_img, start_pick_up=False)
+            world_x, world_y, rotation_angle, color = perception.perception(display_img, start_pick_up=False)
             cv2.imshow('Frame', display_img)
 
             key = cv2.waitKey(1)
