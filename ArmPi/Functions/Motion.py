@@ -16,6 +16,7 @@ class Motion:
     def __init__(self):
 
         self.AK = ArmIK()
+        self.servo1 = 500
         self.base_z = 1.5
         self.block_height = 2.5
         self.num_stacked = 0
