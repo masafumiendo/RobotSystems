@@ -43,6 +43,7 @@ class Motion:
             self.num_stacked %= 3
             return
         else:
+            print('try stacking!')
             self.target_z += self.block_height * self.num_stacked
             self.__pick(world_x, world_y, self.base_z, rotation_angle)
             self.__place(self.target_x, self.target_y, self.target_z)
@@ -156,6 +157,7 @@ if __name__ == "__main__":
         if img is not None:
             frame = img.copy()
             frame_checked_ = img.copy()
+            print(target_color[floor])
             world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[floor], start_pick_up=False)
             cv2.imshow('Frame', frame)
 
@@ -168,6 +170,7 @@ if __name__ == "__main__":
                     floor += 1
                 elif color == 'blue' or color == 'green':
                     _, _, _, color_ = perception.perception(frame_checked_, target_color[floor-1], start_pick_up=False)
+                    print(color_)
                     if color_ == "None":
                         print('stacking is performed!')
                         floor += 1
