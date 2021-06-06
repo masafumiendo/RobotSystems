@@ -155,6 +155,7 @@ if __name__ == "__main__":
         img = my_camera.frame
         if img is not None:
             frame = img.copy()
+            frame_checked_ = img.copy()
             world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[floor], start_pick_up=False)
             cv2.imshow('Frame', frame)
 
@@ -166,7 +167,7 @@ if __name__ == "__main__":
                 if color == 'red':
                     floor += 1
                 elif color == 'blue' or color == 'green':
-                    _, _, _, color_ = perception.perception(frame, target_color[floor-1], start_pick_up=False)
+                    _, _, _, color_ = perception.perception(frame_checked_, target_color[floor-1], start_pick_up=False)
                     if color_ == "None":
                         print('stacking is performed!')
                         floor += 1
