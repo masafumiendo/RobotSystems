@@ -25,7 +25,9 @@ AK = ArmIK()
 
 class Perception:
 
-    def __init__(self):
+    def __init__(self, target_color):
+
+        self.target_color = target_color
 
         self.range_rgb = {
             'red': (0, 0, 255),
@@ -38,7 +40,6 @@ class Perception:
         self.size = (640, 480)
         self.roi = None
         self.get_roi = False
-        self.target_color = None
         self.detected_color = None
         self.start_pick_up = False
 
@@ -132,11 +133,11 @@ class Perception:
 
 def main():
 
+    target_color = ("red")
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
-    perception = Perception()
-    perception.target_color = ("red", "blue", "green")
+    perception = Perception(target_color)
     while True:
         img = my_camera.frame
         if img is not None:
