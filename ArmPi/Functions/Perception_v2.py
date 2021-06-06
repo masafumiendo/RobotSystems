@@ -1,10 +1,13 @@
+# Author: Masafumi Endo
+# Objective: Perceive color blocks
+
 #!/usr/bin/python3
 # coding=utf8
 import sys
-
 sys.path.append('/home/pi/ArmPi/')
 import cv2
 import time
+import Camera
 import threading
 from LABConfig import color_range
 from ArmIK.Transform import getMaskROI, getROI, getCenter, convertCoordinate
@@ -15,6 +18,8 @@ import math
 if sys.version_info.major == 2:
     print('Please run this program with python3!')
     sys.exit(0)
+
+AK = ArmIK()
 
 class Perception:
 
@@ -118,7 +123,7 @@ class Perception:
 
         return world_x, world_y, rotation_angle
 
-    def get_block_location(self, img):
+    def perception(self, img):
 
         # make a copy of the image and draw calibration lines
         img_copy = img.copy()
@@ -152,7 +157,6 @@ class Perception:
 
 def main():
 
-    import Camera
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
@@ -162,7 +166,7 @@ def main():
         img = my_camera.frame
         if img is not None:
             display_img = img.copy()
-            world_x, world_y, rotation_angle, color = perception.get_block_location(display_img)
+            world_x, world_y, rotation_angle, color = perception.perception(display_img)
             cv2.imshow('Frame', display_img)
             key = cv2.waitKey(1)
             if key == 27:
