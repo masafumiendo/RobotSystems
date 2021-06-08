@@ -148,7 +148,7 @@ def main():
                         start_stacking = False
                     else:
                         # check the process is accomplished or not
-                        frame_ = img.copy
+                        frame_ = img.copy()
                         _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
                         if color == "None":
                             print("success!")
