@@ -151,9 +151,11 @@ def main():
                         frame_ = img.copy()
                         _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
                         if color == "None":
+                            print(color)
                             print("success!")
                             floor += 1
                         elif color == target_color[floor-1]:
+                            print(color)
                             print("failed!")
                             motion.num_stacked -= 1
 
