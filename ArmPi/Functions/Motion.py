@@ -40,7 +40,6 @@ class Motion:
             self.target_z = self.base_z
             self.target_angle = rotation_angle
             self.num_stacked += 1
-            self.num_stacked %= 3
             return
         else:
             print('try stacking!')
@@ -51,7 +50,6 @@ class Motion:
 
             self.__initMove()
             self.num_stacked += 1
-            self.num_stacked %= 3
 
     def __pick(self, x, y, z, rotation):
 
@@ -112,19 +110,20 @@ class Motion:
         self.AK.setPitchRangeMoving((0, 10, 10), -30, -30, -90, 1500)
         time.sleep(1.5)
 
-if __name__ == "__main__":
+def main():
 
     my_camera = Camera.Camera()
     my_camera.camera_open()
 
     target_color = ("red", "blue", "green")
+
     perception = Perception()
     motion = Motion()
 
-    # set parameters for while loop
     cnt_img = 0
     floor = 0
     start_stacking = True
+
     while True:
         img = my_camera.frame
         if img is not None:
@@ -135,30 +134,28 @@ if __name__ == "__main__":
             if key == 27:
                 break
 
+            # start motion procedure
             if cnt_img >= 1:
-                if start_stacking:
-                    # execute stacking
+                # register 1st floor's information
+                if floor == 0:
                     motion.stacking(world_x, world_y, rotation_angle, color)
                     floor += 1
-                    if floor <= 1:
-                        start_stacking = True
-                    else:
-                        start_stacking = False
+                # stack blue and green blocks
                 else:
-                    if floor > 1:
+                    if start_stacking:
+                        # pick and place
+                        motion.stacking(world_x, world_y, rotation_angle, color)
+                        start_stacking = False
+                    else:
                         # check the process is accomplished or not
-                        frame_ = img.copy()
+                        frame_ = img.copy
                         _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
-                        start_stacking = True
                         if color == "None":
-                            # accomplished
                             print("success!")
-                        else:
-                            # try stacking again
-                            print(color)
-                            floor -= 1
-                            motion.num_stacked -= 1
+                            floor += 1
+                        elif color == target_color[floor-1]:
                             print("failed!")
+                            motion.num_stacked -= 1
 
             if floor == 3:
                 break
@@ -167,3 +164,6 @@ if __name__ == "__main__":
 
     my_camera.camera_close()
     cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
