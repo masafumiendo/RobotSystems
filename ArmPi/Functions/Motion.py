@@ -129,11 +129,11 @@ if __name__ == "__main__":
             frame = img.copy()
             world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[floor], start_pick_up=False)
             cv2.imshow('Frame', frame)
-
             key = cv2.waitKey(1)
             if key == 27:
                 break
-            if world_x is not None and cnt_img >= 1:
+
+            if cnt_img >= 1:
                 if start_stacking:
                     # execute stacking
                     motion.stacking(world_x, world_y, rotation_angle, color)
@@ -143,13 +143,12 @@ if __name__ == "__main__":
                     # check the process is accomplished or not
                     frame_ = img.copy()
                     _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
+                    start_stacking = True
                     if color == "None":
                         # accomplished
-                        start_stacking = True
                         print("success!")
                     else:
                         # try stacking again
-                        start_stacking = True
                         floor -= 1
                         motion.num_stacked -= 1
                         print("failed!")
