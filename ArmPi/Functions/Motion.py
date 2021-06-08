@@ -151,7 +151,6 @@ def main():
                             motion.num_stacked += 1
                         elif color_ == target_color[motion.num_stacked-1]:
                             print('failed!')
-                            motion.num_stacked -= 1
 
                         start_stacking = True
 
