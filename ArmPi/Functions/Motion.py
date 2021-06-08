@@ -142,14 +142,14 @@ def main():
                     else:
                         # check the process is accomplished or not
                         frame_ = img.copy()
-                        _, _, _, color_ = perception.perception(frame_, target_color[0:motion.num_stacked+1], start_pick_up=False)
+                        _, _, _, color_ = perception.perception(frame_, target_color[motion.num_stacked-1], start_pick_up=False)
                         print('check the process is accomplished!')
-                        print(target_color[0:motion.num_stacked+1])
+                        print(target_color[motion.num_stacked-1])
                         print(color_)
-                        if color_ == target_color[motion.num_stacked]:
+                        if color_ == "None":
                             print('success!')
                             motion.num_stacked += 1
-                        else:
+                        elif color_ == target_color[motion.num_stacked-1]:
                             print('failed!')
                             motion.num_stacked -= 1
 
