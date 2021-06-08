@@ -20,7 +20,6 @@ class Motion:
         self.servo1 = 500
         self.base_z = 1.5
         self.block_height = 2.5
-        self.num_stacked = 0
 
         self.coordinates = {
             'red':    (-15 + 0.5, 12 - 0.5, 1.5),
@@ -29,27 +28,20 @@ class Motion:
             'pallet': (-15 + 1, -7 - 0.5, 1.5),
         }
 
-    def stacking(self, world_x, world_y, rotation_angle, color):
+        self.target_x = 0
+        self.target_y = 0
+        self.target_z = 0
+        self.num_stacked = 0
 
-        if color == 'red':
-            print('first floor detected!')
-            # register 1st floor's information
-            self.color_prev = color
-            self.target_x = world_x
-            self.target_y = world_y
-            self.target_z = self.base_z
-            self.target_angle = rotation_angle
-            self.num_stacked += 1
-            return
-        else:
-            print('try stacking!')
-            self.target_z = self.base_z
-            self.target_z += self.block_height * self.num_stacked
-            self.__pick(world_x, world_y, self.base_z, rotation_angle)
-            self.__place(self.target_x, self.target_y, self.target_z)
+    def stacking(self, world_x, world_y, rotation_angle):
 
-            self.__initMove()
-            self.num_stacked += 1
+        self.target_z = self.base_z
+        self.target_z += self.block_height * self.num_stacked
+        # execute pick and place
+        self.__pick(world_x, world_y, self.base_z, rotation_angle)
+        self.__place(self.target_x, self.target_y, self.target_z)
+
+        self.__initMove()
 
     def __pick(self, x, y, z, rotation):
 
@@ -121,14 +113,12 @@ def main():
     motion = Motion()
 
     cnt_img = 0
-    floor = 0
     start_stacking = True
-
     while True:
         img = my_camera.frame
         if img is not None:
             frame = img.copy()
-            world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[floor], start_pick_up=False)
+            world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[motion.num_stacked], start_pick_up=False)
             cv2.imshow('Frame', frame)
             key = cv2.waitKey(1)
             if key == 27:
@@ -137,34 +127,26 @@ def main():
             # start motion procedure
             if cnt_img >= 1:
                 # register 1st floor's information
-                if floor == 0:
-                    motion.stacking(world_x, world_y, rotation_angle, color)
-                    floor += 1
+                if motion.num_stacked == 0:
+                    motion.target_x = world_x
+                    motion.target_y = world_y
+                    motion.num_stacked += 1
                 # stack blue and green blocks
                 else:
                     if start_stacking:
                         # pick and place
-                        motion.stacking(world_x, world_y, rotation_angle, color)
+                        motion.stacking(world_x, world_y, rotation_angle)
                         start_stacking = False
                     else:
                         # check the process is accomplished or not
                         frame_ = img.copy()
-                        _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
-                        if color == "None":
-                            print(color)
-                            print("success!")
-                            print(floor)
-                            floor += 1
-                        elif color == target_color[floor-1]:
-                            print(color)
-                            print("failed!")
-                            print(floor)
+                        _, _, _, color_ = perception.perception(frame_, target_color[motion.num_stacked-1], start_pick_up=False)
+                        if color_ == "None":
+                            motion.num_stacked += 1
+                        elif color == target_color[motion.num_stacked-1]:
                             motion.num_stacked -= 1
-
+                        
                         start_stacking = True
-
-            if floor == 3:
-                break
 
             cnt_img += 1
 
