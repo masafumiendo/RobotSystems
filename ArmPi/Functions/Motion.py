@@ -140,18 +140,19 @@ if __name__ == "__main__":
                     floor += 1
                     start_stacking = False
                 else:
-                    # check the process is accomplished or not
-                    frame_ = img.copy()
-                    _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
-                    start_stacking = True
-                    if color == "None":
-                        # accomplished
-                        print("success!")
-                    else:
-                        # try stacking again
-                        floor -= 1
-                        motion.num_stacked -= 1
-                        print("failed!")
+                    if floor > 1:
+                        # check the process is accomplished or not
+                        frame_ = img.copy()
+                        _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
+                        start_stacking = True
+                        if color == "None":
+                            # accomplished
+                            print("success!")
+                        else:
+                            # try stacking again
+                            floor -= 1
+                            motion.num_stacked -= 1
+                            print("failed!")
 
             if floor == 3:
                 break
