@@ -157,6 +157,8 @@ def main():
                             print("failed!")
                             motion.num_stacked -= 1
 
+                        start_stacking = True
+
             if floor == 3:
                 break
 
