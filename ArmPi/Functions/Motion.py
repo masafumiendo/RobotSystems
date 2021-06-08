@@ -153,10 +153,12 @@ def main():
                         if color == "None":
                             print(color)
                             print("success!")
+                            print(floor)
                             floor += 1
                         elif color == target_color[floor-1]:
                             print(color)
                             print("failed!")
+                            print(floor)
                             motion.num_stacked -= 1
 
                         start_stacking = True
