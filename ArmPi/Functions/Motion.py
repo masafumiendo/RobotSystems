@@ -127,6 +127,7 @@ def main():
             # start motion procedure
             if cnt_img >= 1:
                 # register 1st floor's information
+                print(motion.num_stacked)
                 if motion.num_stacked == 0:
                     motion.target_x = world_x
                     motion.target_y = world_y
@@ -144,13 +145,18 @@ def main():
                         _, _, _, color_ = perception.perception(frame_, target_color[motion.num_stacked-1], start_pick_up=False)
                         print('check the process is accomplished!')
                         if color_ == "None":
+                            print('success!')
                             motion.num_stacked += 1
                         elif color == target_color[motion.num_stacked-1]:
+                            print('failed!')
                             motion.num_stacked -= 1
 
                         start_stacking = True
 
             cnt_img += 1
+            
+            if motion.num_stacked == 3:
+                break
 
     my_camera.camera_close()
     cv2.destroyAllWindows()
