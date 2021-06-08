@@ -155,6 +155,7 @@ if __name__ == "__main__":
                             print("success!")
                         else:
                             # try stacking again
+                            print(color)
                             floor -= 1
                             motion.num_stacked -= 1
                             print("failed!")
