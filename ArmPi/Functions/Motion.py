@@ -33,7 +33,7 @@ class Motion:
         self.target_z = 0
         self.num_stacked = 0
 
-    def stacking(self, world_x, world_y, rotation_angle):
+    def pick_and_place(self, world_x, world_y, rotation_angle):
 
         self.target_z = self.base_z
         self.target_z += self.block_height * self.num_stacked
@@ -135,7 +135,7 @@ def main():
                 else:
                     if start_stacking:
                         # pick and place
-                        motion.stacking(world_x, world_y, rotation_angle)
+                        motion.pick_and_place(world_x, world_y, rotation_angle)
                         start_stacking = False
                     else:
                         # check the process is accomplished or not
@@ -145,7 +145,7 @@ def main():
                             motion.num_stacked += 1
                         elif color == target_color[motion.num_stacked-1]:
                             motion.num_stacked -= 1
-                        
+
                         start_stacking = True
 
             cnt_img += 1
