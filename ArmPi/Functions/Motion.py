@@ -49,39 +49,6 @@ class Motion:
             self.__place(self.target_x, self.target_y, self.target_z)
             self.__initMove()
 
-    def sort(self, block_x, block_y, block_rotation, block_color):
-
-        if not block_color in ['red', 'green', 'blue']:
-            raise Exception("Bad color :(")
-
-        place_x, place_y, place_z = self.coordinates[block_color]
-
-        if not self.__check_reachable(block_x, block_y):
-            return False
-
-        self.__pick(block_x, block_y, self.base_z, block_rotation)
-
-        self.__place(place_x, place_y, place_z)
-
-        self.__initMove()
-
-    def palletize(self, block_x, block_y, block_rotation):
-
-        place_x, place_y, place_z = self.coordinates["pallet"]
-
-        place_z += self.block_height * self.num_stacked
-
-        if not self.__check_reachable(block_x, block_y):
-            return False
-
-        self.__pick(block_x, block_y, self.base_z, block_rotation)
-
-        self.__place(place_x, place_y, place_z)
-
-        self.__initMove()
-        self.num_stacked += 1
-        self.num_stacked %= 3
-
     def __pick(self, x, y, z, rotation):
 
         servo2_angle = getAngle(x, y, rotation)
@@ -156,7 +123,6 @@ if __name__ == "__main__":
         img = my_camera.frame
         if img is not None:
             frame = img.copy()
-            frame_checked_ = img.copy()
             world_x, world_y, rotation_angle, color = perception.perception(frame, target_color[floor], start_pick_up=False)
             cv2.imshow('Frame', frame)
 
