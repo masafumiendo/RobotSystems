@@ -40,14 +40,16 @@ class Motion:
             self.target_z = self.base_z
             self.target_angle = rotation_angle
             self.num_stacked += 1
-            self.num_stacked %= 3
             return
         else:
             print('try stacking!')
+            self.target_z = self.base_z
             self.target_z += self.block_height * self.num_stacked
             self.__pick(world_x, world_y, self.base_z, rotation_angle)
             self.__place(self.target_x, self.target_y, self.target_z)
+
             self.__initMove()
+            self.num_stacked += 1
 
     def __pick(self, x, y, z, rotation):
 
@@ -115,10 +117,12 @@ if __name__ == "__main__":
 
     target_color = ("red", "blue", "green")
     perception = Perception()
-
     motion = Motion()
+
+    # set parameters for while loop
     cnt_img = 0
     floor = 0
+    start_stacking = True
     while True:
         img = my_camera.frame
         if img is not None:
@@ -130,8 +134,28 @@ if __name__ == "__main__":
             if key == 27:
                 break
             if world_x is not None and cnt_img >= 1:
-                motion.stacking(world_x, world_y, rotation_angle, color)
-                floor += 1
+                if start_stacking:
+                    # execute stacking
+                    motion.stacking(world_x, world_y, rotation_angle, color)
+                    floor += 1
+                    start_stacking = False
+                else:
+                    # check the process is accomplished or not
+                    frame_ = img.copy()
+                    _, _, _, color = perception.perception(frame_, target_color[floor-1], start_pick_up=False)
+                    if color == "None":
+                        # accomplished
+                        start_stacking = True
+                        print("success!")
+                    else:
+                        # try stacking again
+                        start_stacking = True
+                        floor -= 1
+                        motion.num_stacked -= 1
+                        print("failed!")
+
+            if floor == 3:
+                break
 
             cnt_img += 1
 
