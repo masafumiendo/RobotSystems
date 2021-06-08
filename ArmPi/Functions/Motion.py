@@ -40,6 +40,7 @@ class Motion:
             self.target_z = self.base_z
             self.target_angle = rotation_angle
             self.num_stacked += 1
+            self.num_stacked %= 3
             return
         else:
             print('try stacking!')
@@ -50,6 +51,7 @@ class Motion:
 
             self.__initMove()
             self.num_stacked += 1
+            self.num_stacked %= 3
 
     def __pick(self, x, y, z, rotation):
 
@@ -138,7 +140,10 @@ if __name__ == "__main__":
                     # execute stacking
                     motion.stacking(world_x, world_y, rotation_angle, color)
                     floor += 1
-                    start_stacking = False
+                    if floor <= 1:
+                        start_stacking = True
+                    else:
+                        start_stacking = False
                 else:
                     if floor > 1:
                         # check the process is accomplished or not
