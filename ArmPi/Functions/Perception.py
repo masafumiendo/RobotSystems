@@ -65,7 +65,7 @@ class Perception:
                 world_x, world_y, rotation = self.__coordinates_converter(areaMaxContour_max, display_img=img)
             else:
                 self.detected_color = "None"
-
+        print(max_area_max)
         cv2.putText(img, "Color: " + self.detected_color, (10, img.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.65, self.range_rgb[draw_color], 2)
 
         return world_x, world_y, rotation, self.detected_color
