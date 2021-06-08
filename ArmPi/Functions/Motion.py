@@ -135,12 +135,14 @@ def main():
                 else:
                     if start_stacking:
                         # pick and place
+                        print('start pick and place!')
                         motion.pick_and_place(world_x, world_y, rotation_angle)
                         start_stacking = False
                     else:
                         # check the process is accomplished or not
                         frame_ = img.copy()
                         _, _, _, color_ = perception.perception(frame_, target_color[motion.num_stacked-1], start_pick_up=False)
+                        print('check the process is accomplished!')
                         if color_ == "None":
                             motion.num_stacked += 1
                         elif color == target_color[motion.num_stacked-1]:
